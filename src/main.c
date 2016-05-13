@@ -217,6 +217,15 @@ int main()
               lightval = 64;
       }   
 
+      // hourly chime & alarm testing 
+      if ( rtc.tenminutes == 0 && rtc.minutes == 0 && 
+           rtc.tenseconds == 0 && rtc.seconds < 1 ) {
+        // hourly chime
+        BUZZER = 0; // on        
+      } else {
+        BUZZER = 1; //off
+      }
+      
       ds_readburst((uint8_t *) &rtc); // read rtc
 
       // display decision tree
