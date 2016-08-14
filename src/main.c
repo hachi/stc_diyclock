@@ -71,8 +71,8 @@ void _delay_ms(uint8_t ms)
     // max 255 ms
     uint8_t i, j;
     do {
-    	i = 4;
-    	j = 240;
+    	i = 11;
+    	j = 190;
     	do
     	{
     		while (--j);
@@ -104,11 +104,14 @@ __bit  S2_PRESSED;
 volatile uint8_t debounce[2];      // switch debounce buffer
 volatile uint8_t switchcount[2];
 
+void switch_reader();
+
 void timer0_isr() __interrupt 1 __using 1
 {
     // display refresh ISR
     // cycle thru digits one at a time
     uint8_t digit = displaycounter % 4;
+    static uint8_t blah = 0;
 
     // turn off all digits, set high    
     P3 |= 0x3C;
@@ -121,12 +124,17 @@ void timer0_isr() __interrupt 1 __using 1
         P3 &= ~(0x4 << digit);  
     }
     displaycounter++;
-    // done    
+    // done
+
+    if (++blah >= 100) {
+        blah = 0;
+        switch_reader();
+    }
 }
 
 #define SW_CNTMAX 80
 
-void timer1_isr() __interrupt 3 __using 1 {
+void switch_reader() {
     // debounce ISR
     
     // increment count if settled closed
@@ -154,22 +162,12 @@ void timer1_isr() __interrupt 3 __using 1 {
 
 void Timer0Init(void)		//100us @ 11.0592MHz
 {
-    TL0 = 0xA3;		//Initial timer value
-    TH0 = 0xFF;		//Initial timer value
+    TL0 = 0xAE;		//Initial timer value
+    TH0 = 0xFB;		//Initial timer value
     TF0 = 0;		//Clear TF0 flag
     TR0 = 1;		//Timer0 start run
     ET0 = 1;        // enable timer0 interrupt
     EA = 1;         // global interrupt enable
-}
-
-void Timer1Init(void)		//10ms @ 11.0592MHz
-{
-	TL1 = 0xD5;		//Initial timer value
-	TH1 = 0xDB;		//Initial timer value
-	TF1 = 0;		//Clear TF1 flag
-	TR1 = 1;		//Timer1 start run
-    ET1 = 1;    // enable Timer1 interrupt
-    EA = 1;     // global interrupt enable
 }
 
 #define getkeypress(a) a##_PRESSED
@@ -196,7 +194,6 @@ int main()
     //ds_reset_clock();    
     
     Timer0Init(); // display refresh
-    Timer1Init(); // switch debounce
     
     // LOOP
     while(1)
