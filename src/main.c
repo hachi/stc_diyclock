@@ -114,14 +114,14 @@ void timer0_isr() __interrupt 1 __using 1
     uint8_t digit = displaycounter % 4;
 
     // turn off all digits, set high    
-    P3 |= 0x3C;
+    P2 |= 0x0F;
 
     // auto dimming, skip lighting for some cycles
     if (displaycounter % lightval < 4 ) {
         // fill digits
-        P2 = dbuf[digit];
+        P3 = dbuf[digit];
         // turn on selected digit, set low
-        P3 &= ~(0x4 << digit);  
+        P2 &= ~(0x1 << digit);
     }
     displaycounter++;
 
