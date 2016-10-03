@@ -356,10 +356,10 @@ int main()
               }
   
               if (flash_23) {
-	          dotdisplay(2,display_colon);
+	          dotdisplay(2,0);
                   dotdisplay(3,H12_24&H12_PM);	// dot3 if AMPM mode and PM=1
               } else {
-                  filldisplay( 2, (rtc_table[DS_ADDR_MINUTES]>>4)&(DS_MASK_MINUTES_TENS>>4), display_colon);	//tenmin
+                  filldisplay( 2, (rtc_table[DS_ADDR_MINUTES]>>4)&(DS_MASK_MINUTES_TENS>>4), 0);	//tenmin
                   filldisplay( 3, rtc_table[DS_ADDR_MINUTES]&DS_MASK_MINUTES_UNITS, H12_24 & H12_PM);  		//min
               }
               break;
@@ -374,7 +374,6 @@ int main()
               break;
 
 	  case M_SEC_DISP:
-	      dotdisplay(0,display_colon);
 	      dotdisplay(1,display_colon);
 	      filldisplay(2,(rtc_table[DS_ADDR_SECONDS]>>4)&(DS_MASK_SECONDS_TENS>>4),0);
 	      filldisplay(3,rtc_table[DS_ADDR_SECONDS]&DS_MASK_SECONDS_UNITS,0);
