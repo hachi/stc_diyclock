@@ -17,20 +17,20 @@
 
 // alias for relay and buzzer outputs, using relay to drive led for indication of main loop status
 #define RELAY   P1_4
-#define BUZZER  P1_5
+#define BUZZER  P0_1
     
 // adc channels for sensors
-#define ADC_LIGHT 6
-#define ADC_TEMP  7
+#define ADC_LIGHT 7
+#define ADC_TEMP  6
 
 // three steps of dimming. Photoresistor adc value is 0-255. Lower values = brighter.
 #define DIM_HI  100
 #define DIM_LO  190
 
 // button switch aliases
-#define SW2     P3_0
+#define SW2     P2_6
 #define S2      1
-#define SW1     P3_1
+#define SW1     P2_7
 #define S1      0
 
 // display mode states
